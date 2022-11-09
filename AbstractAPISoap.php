@@ -150,7 +150,14 @@ namespace Netim {
 		{
 			return $this->_lastError;
 		}
-
+		public function getUserID()
+		{
+			return $this->_userID;
+		}
+		public function getPassword()
+		{
+			return $this->_password;
+		}
 		# ---------------------------------------------------
 		# PRIVATE UTILITIES
 		# ---------------------------------------------------
@@ -184,7 +191,7 @@ namespace Netim {
 		 *                           http://php.net/manual/fr/function.call-user-func-array.php
 		 * @see array_unshift http://php.net/manual/en/function.array-unshift.php
 		 */
-		private function _launchCommand($fn, $params=array())
+		protected function _launchCommand($fn, $params=array())
 		{
 			$this->_lastRequestFunction = $fn;
 			$this->_lastRequestParams = $params;
@@ -235,58 +242,57 @@ namespace Netim {
 			return $res;
 		}
 
-        # -------------------------------------------------
-		# Protected Utilities
 		# -------------------------------------------------
-        
-		protected function _contactCreate(array $contact)
+		# MISC
+		# -------------------------------------------------	
+		/**
+		 * Returns a welcome message
+		 *
+		 * Example
+		 *	```php
+		 *	try
+		 *	{
+		 *		$res = $client->hello();
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something when operation had an error
+		 *	}
+		 *	//continue processing
+		 *	```
+		 *
+		 * @return string a welcome message
+		 * 
+		 * @throws NetimAPIException
+		 *
+		 * @see hello API http://support.netim.com/en/wiki/Hello
+		 */
+		public function hello():string
 		{
-			$params[] = $contact;
-			return $this->_launchCommand('contactCreate', $params);
+			return $this->_launchCommand('hello');
 		}
         
-		protected function _contactInfo(string $idContact)
+		/**
+		 * Returns the list of parameters reseller account
+		 *
+		 *
+		 * @return StructQueryResellerAccount A structure of StructQueryResellerAccount containing the information
+		 * 
+		 * @throws NetimAPIException
+		 *
+		 * @see queryResellerAccount API https://support.netim.com/en/wiki/QueryResellerAccount
+		 */
+        public function queryResellerAccount():stdClass
 		{
-			$params[] = $idContact;
-			return $this->_launchCommand('contactInfo', $params);
+			return $this->_launchCommand('queryResellerAccount');
 		}
         
-		protected function _contactUpdate(string $idContact, array $datas)
+		public function queryOpe(int $operationID):stdClass
 		{
-			$params[] = $idContact;
-			$params[] = $datas;
-			return $this->_launchCommand('contactUpdate', $params);
-		}
-        
-		protected function _contactOwnerUpdate(string $idContact, array $datas)
-		{
-			$params[] = $idContact;
-			$params[] = $datas;
-			return $this->_launchCommand('contactOwnerUpdate', $params);
-		}
-        
-		protected function _contactDelete(string $idContact)
-		{
-			$params[] = $idContact;
-			return $this->_launchCommand('contactDelete', $params);
+			$params[] = $operationID;
+			return $this->_launchCommand('queryOpe', $params);
 		}
 
-		protected function _login($version = null)
-		{        
-			
-            $params[] = strtoupper($this->_userID);
-            $params[] = $this->_password;
-            $params[] = $this->_defaultLanguage;
-			if ($version) 
-			{
-				$params[] = $version;
-				$this->_launchCommand('login', $params);
-			}
-            else
-            	$this->_launchCommand('sessionOpen', $params);
-		}
-        
-        
         # -------------------------------------------------
 		# SESSION
 		# -------------------------------------------------	 
@@ -296,8 +302,13 @@ namespace Netim {
 		 *
 		 * @throws NetimAPIException
 		 */
-		public abstract function sessionOpen():void;
-
+		public function sessionOpen():void
+		{        
+            $params[] = strtoupper($this->_userID);
+            $params[] = $this->_password;
+            $params[] = $this->_defaultLanguage;
+           	$this->_launchCommand('sessionOpen', $params);
+		}
 
 		/**
 		 * Close the SOAP session
@@ -356,54 +367,10 @@ namespace Netim {
 			$this->_launchCommand('sessionSetPreference', $params);
         }
         
-        /**
-		 * Returns a welcome message
-		 *
-		 * Example
-		 *	```php
-		 *	try
-		 *	{
-		 *		$res = $client->hello();
-		 *	}
-		 *	catch (NetimAPIexception $exception)
-		 *	{
-		 *		//do something when operation had an error
-		 *	}
-		 *	//continue processing
-		 *	```
-		 *
-		 * @return string a welcome message
-		 * 
-		 * @throws NetimAPIException
-		 *
-		 * @see hello API http://support.netim.com/en/wiki/Hello
-		 */
-		public function hello():string
-		{
-			return $this->_launchCommand('hello');
-		}
-        
-		/**
-		 * Returns the list of parameters reseller account
-		 *
-		 *
-		 * @return StructQueryResellerAccount A structure of StructQueryResellerAccount containing the information
-		 * 
-		 * @throws NetimAPIException
-		 *
-		 * @see queryResellerAccount API https://support.netim.com/en/wiki/QueryResellerAccount
-		 */
-        public function queryResellerAccount():stdClass
-		{
-			return $this->_launchCommand('queryResellerAccount');
-		}
-        
-		public function queryOpe(int $operationID):stdClass
-		{
-			$params[] = $operationID;
-			return $this->_launchCommand('queryOpe', $params);
-		}
-        
+		# -------------------------------------------------
+		# OPERATIONS
+		# -------------------------------------------------	 
+
         /**
 		 * Cancel a pending operation
 		 * @warning Depending on the current status of the operation, the cancellation might not be possible
@@ -594,10 +561,262 @@ namespace Netim {
 			return $this->_launchCommand('queryHostList', $params);
 		}
         
+		# -------------------------------------------------
+		# CONTACT
+		# -------------------------------------------------	        
+
+		/**
+		 * Creates a contact
+		 *
+		 * Example1: non-owner
+		 *	```php
+		 *	//we create a contact as a non-owner 
+		 *	$id = null;
+		 *	try
+		 *	{
+		 *		$contact = array(
+		 *	 		'firstName'=> 'barack',
+		 *			'lastName' => 'obama',
+		 *			'bodyForm' => 'IND',
+		 *			'bodyName' => '',
+		 *			'address1' => '1600 Pennsylvania Ave NW',
+		 *			'address2' => '',
+		 *			'zipCode'  => '20500',
+		 *			'area'	   => 'DC',
+		 *			'city'	   => 'Washington',
+		 *			'country'  => 'US',
+		 *			'phone'	   => '2024561111',
+		 *			'fax'	   => '',
+		 *			'email'    => 'barack.obama@gov.us',
+		 *			'language' => 'EN',
+		 *			'isOwner'  => 0
+		 *		);
+		 *		$id = $client->contactCreate($contact);
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something about the error
+		 *	}
+		 *
+		 *	//continue processing
+		 *	```
+		 *
+		 * Example2: owner
+		 *	```php	
+		 *	$id = null;
+		 *	try
+		 *	{
+		 *	 	$contact = array(
+		 *	 		'firstName'=> 'bill',
+		 *			'lastName' => 'gates',
+		 *			'bodyForm' => 'IND',
+		 *			'bodyName' => '',
+		 *			'address1' => '1 hollywood bvd',
+		 *			'address2' => '',
+		 *			'zipCode'  => '18022',
+		 *			'area'	   => 'LA',
+		 *			'city'	   => 'Los Angeles',
+		 *			'country'  => 'US',
+		 *			'phone'	   => '2024531111',
+		 *			'fax'	   => '',
+		 *			'email'    => 'bill.gates@microsoft.com',
+		 *			'language' => 'EN',
+		 *			'isOwner'  => 1
+		 *		);
+		 *		$id = $client->contactCreate($contact);
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something about the error
+		 *	}
+		 *
+		 *	//continue processing
+		 *	```
+		 * @param StructContact $contact the contact to create
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return string the ID of the contact
+		 *
+		 * @see StructContact http://support.netim.com/en/wiki/StructContact
+		 */
+		public function contactCreate(array $contact): string
+		{
+			$params[] = $contact;
+			return $this->_launchCommand('contactCreate', $params);
+		}
+
+		/**
+		 * Returns all informations about a contact object
+		 *
+		 * Example:
+		 *	```php
+		 *	$idContact = 'BJ007';
+		 *	$res = null;
+		 *	try 
+		 *	{
+		 *		$res = $client->contactInfo($idContact);
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something about the error
+		 *	}
+		 *	$contactInfo = $res;
+		 *	//continue processing
+		 *	```
+		 * @param string $idContact ID of the contact to be queried
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return StructContactReturn information on the contact
+		 *
+		 * @see contactInfo API http://support.netim.com/en/wiki/ContactInfo
+		 * @see StructContactReturn API http://support.netim.com/en/wiki/StructContactReturn
+		 */
+		public function contactInfo(string $idContact): stdClass
+		{
+			$params[] = $idContact;
+			return $this->_launchCommand('contactInfo', $params);
+		}
+
+		/**
+		 * Edit contact details
+		 *
+		 * Example: 
+		 *	```php
+		 *	//we update a contact as a non-owner 
+		 *	$res = null;
+		 *	try {
+		 *	 	$contact = array(
+		 *	 		'firstName'=> 'donald',
+		 *			'lastName' => 'trump',
+		 *			'bodyForm' => 'IND',
+		 *			'bodyName' => '',
+		 *			'address1' => '1600 Pennsylvania Ave NW',
+		 *			'address2' => '',
+		 *			'zipCode'  => '20500',
+		 *			'area'	   => 'DC',
+		 *			'city'	   => 'Washington',
+		 *			'country'  => 'US',
+		 *			'phone'	   => '2024561111',
+		 *			'fax'	   => '',
+		 *			'email'    => 'donald.trump@gov.us',
+		 *			'language' => 'EN',
+		 *			'isOwner'  => 0
+		 *		);
+		 *		$res = $client->contactUpdate($idContact, $contact);   
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something when operation had an error
+		 *	}
+		 *	//continue processing
+		 * ```
+		 *
+		 * @param string $idContact the ID of the contact to be updated
+		 * @param StructContact $contact the contact object containing the new values
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return StructOperationResponse giving information on the status of the operation
+		 *
+		 * @see contactUpdate API http://support.netim.com/en/wiki/ContactUpdate
+		 */
+		public function contactUpdate(string $idContact, array $datas): stdClass
+		{
+			$params[] = $idContact;
+			$params[] = $datas;
+			return $this->_launchCommand('contactUpdate', $params);
+		}
+
+		/**
+		 * Edit contact details (for owner only) 
+		 *
+		 * Example
+		 *	```php
+		 *	//we update a owner contact
+		 *	$res = null;
+		 *	try
+		 *	{
+		 *			$contact = array(
+		 *	 		'firstName'=> 'elon',
+		 *			'lastName' => 'musk',
+		 *			'bodyForm' => 'IND',
+		 *			'bodyName' => '',
+		 *			'address1' => '1 hollywood bvd',
+		 *			'address2' => '',
+		 *			'zipCode'  => '18022',
+		 *			'area'	   => 'LA',
+		 *			'city'	   => 'Los Angeles',
+		 *			'country'  => 'US',
+		 *			'phone'	   => '2024531111',
+		 *			'fax'	   => '',
+		 *			'email'    => 'elon.musk@tesla.com',
+		 *			'language' => 'EN',
+		 *			'isOwner'  => 1
+		 *		);
+		 *		$res = $client->contactOwnerUpdate($idContact, $contact); 
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something when operation had an error
+		 *	}
+		 *	//continue processing
+		 *	```
+		 *
+		 * @param string $idContact the ID of the contact to be updated
+		 * @param StructOwnerContact $contact the contact object containing the new values
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return StructOperationResponse giving information on the status of the operation
+		 *
+		 * @see contactOwnerUpdate API http://support.netim.com/en/wiki/ContactOwnerUpdate
+		 * @see StructOwnerContact http://support.netim.com/en/wiki/StructOwnerContact
+		 * 
+		 */
+		public function contactOwnerUpdate(string $idContact, array $datas): stdClass
+		{
+			$params[] = $idContact;
+			$params[] = $datas;
+			return $this->_launchCommand('contactOwnerUpdate', $params);
+		}
+
+		/**
+		 * Deletes a contact object 
+		 *
+		 * Example1:
+		 *	```php
+		 *	$contactID = 'BJ007';
+		 *	$res = null;
+		 *	try
+		 *	{
+		 *		$res = $client->contactDelete($contactID);
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something when operation had an error
+		 *	}
+		 *	//continue processing
+		 *	```
+		 * @param string $idContact ID of the contact to be deleted
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return StructOperationResponse giving information on the status of the operation
+		 *
+		 * @see contactDelete API http://support.netim.com/en/wiki/ContactDelete
+		 * @see StructOperationResponse API http://support.netim.com/en/wiki/StructOperationResponse
+		 */
+		public function contactDelete(string $idContact): stdClass
+		{
+			$params[] = $idContact;
+			return $this->_launchCommand('contactDelete', $params);
+		}
+
         # -------------------------------------------------
 		# DOMAIN
 		# -------------------------------------------------
-
 
 		/**
 		 * Checks if domain names are available for registration   
