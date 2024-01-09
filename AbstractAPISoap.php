@@ -374,21 +374,19 @@ namespace Netim {
         /**
 		 * Updates the settings of the current session. 
 		 *
-		 * @param string $type Setting to be modified : lang
-		 *                                              sync
-		 * @param string $value New value of the Setting : lang = EN / FR
-		 *                                                 sync = 0 (for asynchronous) / 1 (for synchronous) 
-		 * @throws NetimAPIException
+		 * @param	array	$preferences	the preferences of the API session
+		 * 
+		 * @throws	NetimAPIException
 		 *
 		 * @see sessionSetPreference API https://support.netim.com/en/wiki/SessionSetPreference
 		 */
-        public function sessionSetPreference(string $type, string $value):void
-        {
-			$params = [];
-			$params[] = $type;
-			$params[] = $value;
+		public function sessionSetPreference(array $preferences): void
+		{
+			$params = array(
+				$preferences
+			);
 			$this->_launchCommand('sessionSetPreference', $params);
-        }
+		}
         
 		# -------------------------------------------------
 		# OPERATIONS
