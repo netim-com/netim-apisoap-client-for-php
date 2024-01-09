@@ -306,12 +306,6 @@ namespace Netim {
 		{
 			return $this->_launchCommand('queryResellerAccount');
 		}
-        
-		public function queryOpe(int $operationID):stdClass
-		{
-			$params[] = $operationID;
-			return $this->_launchCommand('queryOpe', $params);
-		}
 
 		# -------------------------------------------------
 		# SESSION
@@ -410,36 +404,22 @@ namespace Netim {
 		}
         
         /**
-		 * Returns the status (opened/closed) for all operations for the extension 
+		 * Returns a list of operations matching the given filters
 		 * 
-		 * @param string $tld Extension (uppercase without dot)
+		 * @param	array	$filters	Filters to apply to the list
 		 * 
-		 * @throws NetimAPIException
+		 * @throws	NetimAPIException
 		 * 
-		 * @return object An associative array with (Name of the operation, boolean active)
-		 * 
-		 * @see queryOpeList API https://support.netim.com/en/wiki/QueryOpeList
+		 * @return	StructOpeList
 		 * 
 		 */
-		public function queryOpeList(string $tld):stdClass
+		public function opeList(array $filters = []):array
 		{
-			$params[] = $tld;
-			return $this->_launchCommand('queryOpeList', $params);
-		}
-        
-		/**
-		 * Returns the list of pending operations processing 
-		 * 
-		 * @throws NetimAPIException
-		 * 
-		 * @return StructQueryOpePending[]  the list of pending operations processing 
-		 * 
-		 * @see queryOpePending API https://support.netim.com/en/wiki/QueryOpePending
-		 * 
-		 */
-        public function queryOpePending():array
-		{
-			return $this->_launchCommand('queryOpePending');
+			$params = array(
+				$filters
+			);
+		
+			return $this->_launchCommand('opeList', $params);
 		}
 
 		/**
