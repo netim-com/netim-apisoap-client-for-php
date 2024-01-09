@@ -441,22 +441,26 @@ namespace Netim {
 		{
 			return $this->_launchCommand('queryOpePending');
 		}
-        
-        /**
-		 * Returns the list of pending operations processing 
+
+		/**
+		 * Returns a list of contacts matching the given filters
+		 * 
+		 * @param	string	$filters	Filters to apply to the list
 		 * 
 		 * @throws NetimAPIException
 		 * 
 		 * @return StructContactList[] the list of contacts associated to the account
 		 * 
-		 * @see queryContactList API https://support.netim.com/en/wiki/QueryContactList
+		 * @see contactList API https://support.netim.com/en/wiki/QueryContactList
 		 * 
 		 */
-        public function queryContactList(string $filter="", string $field=""):array
+		public function contactList(array $filters = []): array
 		{
-			$params[] = $filter;
-			$params[] = $field;
-			return $this->_launchCommand('queryContactList', $params);
+			$params = array(
+				$filters
+			);
+
+			return $this->_launchCommand('contactList', $params);
 		}
         
         # -------------------------------------------------
