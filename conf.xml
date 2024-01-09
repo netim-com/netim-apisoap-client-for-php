@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<url>http://drs.dev.netim.com/3.0/api.wsdl</url>
-	<login>NETIM</login>
-	<password>oitqrfvb</password>
+	<login>login</login>
+	<password>password</password>
 	<preferences>
 		<lang>EN</lang>
 	</preferences>
