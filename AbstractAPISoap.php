@@ -585,18 +585,21 @@ namespace Netim {
 		}
         
         /**
-		 * @param string $filter The filter applies onto the host name 
+		 * @param	array	$filters	Filters to apply to the list
 		 * 
-		 * @throws NetimAPIException
+		 * @throws	NetimAPIException
 		 *
-		 * @return array An array of StructHostList
+		 * @return	array	An array of StructHostList
 		 *
-		 * @see queryHostList API http://support.netim.com/en/wiki/QueryHostList
+		 * @see	hostList API http://support.netim.com/en/wiki/hostList
 		 */
-		public function queryHostList(string $filter):array
+		public function hostList(array $filters):array
 		{
-			$params[] = $filter;
-			return $this->_launchCommand('queryHostList', $params);
+			$params = array(
+				$filters
+			);
+
+			return $this->_launchCommand('hostList', $params);
 		}
         
 		# -------------------------------------------------
