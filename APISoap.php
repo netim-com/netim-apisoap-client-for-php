@@ -90,14 +90,15 @@ namespace Netim {
 		/**
 		 * Constructor for class APISoap
 		 *
-		 * @param string $userID the ID the client uses to connect to his NETIM account
-		 * @param string $password the PASSWORD the client uses to connect to his NETIM account
+		 * @param	string	$userID			the ID the client uses to connect to his NETIM account
+		 * @param	string	$password		the PASSWORD the client uses to connect to his NETIM account
+		 * @param	array	$preferences	the preferences of the API session
 		 *	 
 		 * @throws Error if $userID, $password or $apiURL are not string or are empty
 		 * 
 		 * @link semantic versionning http://semver.org/ by Tom Preston-Werner 
 		 */
-		public function __construct(string $userID = null, string $password = null)
+		public function __construct(string $userID = null, string $password = null, array $preferences = null)
 		{
 
 			$confpath = dirname(__FILE__) . "/conf.xml";
@@ -106,36 +107,44 @@ namespace Netim {
 
 			$conf = get_object_vars(simplexml_load_file($confpath));
 
-			if (is_null($userID) && is_null($password)) //No parameters
-			{
-				if (!array_key_exists('login', $conf) || empty($conf['login']))
-					throw new NetimAPIException("Missing or empty <login> in conf file.");
-
-				if (!array_key_exists('password', $conf) || empty($conf['password']))
-					throw new NetimAPIException("Missing or empty <password> in conf file.");
-
+			// Login
+			if (isset($userID)) {
+				if (empty($userID)) {
+					throw new NetimAPIException('Missing $userID.');
+				}
+			} else {
+				if (empty($conf['login'])) {
+					throw new NetimAPIException('Missing <login> in conf file.');
+				}
 				$userID = trim($conf['login']);
-				$password = trim($conf['password']);
-			} else //With parameters
-			{
-				if (empty($userID))
-					throw new NetimAPIException("Missing \$userID.");
-
-				if (empty($password))
-					throw new NetimAPIException("Missing \$password.");
 			}
 
-			if (!array_key_exists('url', $conf) || empty($conf['url']))
-				throw new NetimAPIException("Missing or empty <url> in conf file.");
+			// Password
+			if (isset($password)) {
+				if (empty($password)) {
+					throw new NetimAPIException('Missing $password.');
+				}
+			} else {
+				if (empty($conf['password'])) {
+					throw new NetimAPIException('Missing <password> in conf file.');
+				}
+				$password = trim($conf['password']);
+			}
 
+			// API URL
+			if (empty($conf['url'])) {
+				throw new NetimAPIException('Missing or empty <url> in conf file.');
+			}
 			$apiURL = $conf['url'];
 
-			if (in_array($conf['language'], array("EN", "FR")))
-				$defaultLanguage = $conf['language'];
-			else
-				$defaultLanguage = "EN";
+			// Session preferences
+			if (empty($preferences)) {
+				if (!empty($conf['preferences'])) {
+					$preferences = get_object_vars($conf['preferences']);
+				}
+			}
 
-			parent::__construct($userID, $password, $apiURL, $defaultLanguage);
+			parent::__construct($userID, $password, $apiURL, $preferences);
 		}
 	}
 }

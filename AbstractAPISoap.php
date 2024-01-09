@@ -94,7 +94,7 @@ namespace Netim {
 		private $_userID;
 		private $_password;
 		private $_apiURL;
-        private $_defaultLanguage;
+        private $_preferences;
 
 		private $_lastRequestParams;
 		private $_lastRequestFunction;
@@ -104,24 +104,30 @@ namespace Netim {
 		/**
 		 * Constructor for class AbstractAPISoap
 		 *
-		 * @param string $userID the ID the client uses to connect to his NETIM account
-		 * @param string $password the PASSWORD the client uses to connect to his NETIM account
+		 * @param	string	$userID			the ID the client uses to connect to his NETIM account
+		 * @param	string	$password		the PASSWORD the client uses to connect to his NETIM account
+		 * @param	string	$apiURL			the URL of the API
+		 * @param	array	$preferences	the preferences of the API session
 		 *	 
-		 * @throws Error if $userID, $password or $apiURL are not string or are empty
+		 * @throws	Error	if $userID, $password or $apiURL are not string or are empty
 		 * 
 		 * @link semantic versionning http://semver.org/ by Tom Preston-Werner 
 		 */
-		protected function __construct(string $userID, string $password, string $apiURL, string $defaultLanguage)
+		protected function __construct(string $userID, string $password, string $apiURL, array $preferences)
 		{
-            register_shutdown_function([&$this, "__destruct"]);
+			register_shutdown_function([&$this, "__destruct"]);
 			// Init variables
 			$this->_connected = false;
 			$this->_sessionID = null;
 
-            $this->_userID = $userID;
-            $this->_password = $password;
-            $this->_apiURL = $apiURL;
-            $this->_defaultLanguage = $defaultLanguage;
+			$this->_userID = $userID;
+			$this->_password = $password;
+			$this->_apiURL = $apiURL;
+
+			$this->_preferences = $preferences;
+			if (empty($this->_preferences['lang'])) {
+				$this->_preferences['lang'] = 'EN';
+			}
 
 			// Init Client Soap object
 			$this->_clientSOAP = new SoapClient($this->_apiURL);
@@ -134,6 +140,14 @@ namespace Netim {
 
 		}
 
+		public function getSOAPClient()
+		{
+			return $this->_clientSOAP;
+		}
+		public function getApiURL()
+		{
+			return $this->_apiURL;
+		}
 		public function getLastRequestParams()
 		{
 			return $this->_lastRequestParams;
@@ -150,6 +164,7 @@ namespace Netim {
 		{
 			return $this->_lastError;
 		}
+
 		public function getUserID()
 		{
 			return $this->_userID;
@@ -158,6 +173,11 @@ namespace Netim {
 		{
 			return $this->_password;
 		}
+		public function getPreferences($key = null)
+		{
+			return (isset($key)) ? $this->_preferences[$key] : $this->_preferences;
+		}
+
 		# ---------------------------------------------------
 		# PRIVATE UTILITIES
 		# ---------------------------------------------------
@@ -293,7 +313,7 @@ namespace Netim {
 			return $this->_launchCommand('queryOpe', $params);
 		}
 
-        # -------------------------------------------------
+		# -------------------------------------------------
 		# SESSION
 		# -------------------------------------------------	 
 
@@ -302,12 +322,15 @@ namespace Netim {
 		 *
 		 * @throws NetimAPIException
 		 */
-		public function sessionOpen():void
-		{        
-            $params[] = strtoupper($this->_userID);
-            $params[] = $this->_password;
-            $params[] = $this->_defaultLanguage;
-           	$this->_launchCommand('sessionOpen', $params);
+		public function sessionOpen(): void
+		{
+			$params = array(
+				$this->getUserID(),
+				$this->getPassword(),
+				$this->getPreferences(),
+			);
+
+			$this->_launchCommand('sessionOpen', $params);
 		}
 
 		/**
