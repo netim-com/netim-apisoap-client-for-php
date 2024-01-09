@@ -716,7 +716,9 @@ namespace Netim {
 		 */
 		public function contactInfo(string $idContact): stdClass
 		{
-			$params[] = $idContact;
+			$params = array(
+				$idContact
+			);
 			return $this->_launchCommand('contactInfo', $params);
 		}
 
