@@ -1776,19 +1776,21 @@ namespace Netim {
 		/**
 		 * Returns all domains linked to the reseller account.
 		 * 
-		 * @param string $filter Domain name
+		 * @param array $filters The filter to apply onto the domain list
 		 * 
 		 * @throws NetimAPIException
 		 * 
 		 * @return array The filter applies onto the domain name
 		 *
-		 * @see queryDomainList API https://support.netim.com/en/wiki/QueryDomainList
+		 * @see domainList API https://support.netim.com/en/wiki/domainList
 		 *
 		 */
-		public function queryDomainList(string $filter = ""):array
+		public function domainList(array $filters = []): array
 		{
-			$params[] = $filter;
-			return $this->_launchCommand('queryDomainList', $params);
+			$params = array(
+				$filters
+			);
+			return $this->_launchCommand('domainList', $params);
 		}
 
 		/**
