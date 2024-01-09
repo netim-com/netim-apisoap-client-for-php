@@ -498,6 +498,23 @@ namespace Netim {
 			$params[] = $ipv6;
 			return $this->_launchCommand('hostCreate', $params);
 		}
+		
+		/**
+		 * Returns all informations about a host
+		 *
+		 * @param	mixed	$host	hostname to be queried
+		 * 
+		 * @throws	NetimAPIException
+		 * 
+		 * @return	StructHostInfo
+		 */
+		public function hostInfo(string $host): stdClass
+		{
+			$params = array(
+				$host
+			);
+			return $this->_launchCommand('hostInfo', $params);
+		}
 
 		/**
 		 * Deletes an Host at the registry 
