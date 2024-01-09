@@ -12,7 +12,9 @@ For the login and the secret you can also override them at the instantiation of 
     <url>http://drs.ote.netim.com/2.0/api.wsdl</url>
     <login>login</login>
     <password>password</password>
-    <language>EN</language>
+    <preferences>
+		<lang>EN</lang>
+	</preferences>
 </configuration>
 ```
 
