@@ -113,15 +113,15 @@ namespace Netim {
 		 */
 		protected function __construct(string $userID, string $password, string $apiURL, string $defaultLanguage)
 		{
-            register_shutdown_function([&$this, "__destruct"]);
+			register_shutdown_function([&$this, "__destruct"]);
 			// Init variables
 			$this->_connected = false;
 			$this->_sessionID = null;
 
-            $this->_userID = $userID;
-            $this->_password = $password;
-            $this->_apiURL = $apiURL;
-            $this->_defaultLanguage = $defaultLanguage;
+			$this->_userID = $userID;
+			$this->_password = $password;
+			$this->_apiURL = $apiURL;
+			$this->_defaultLanguage = $defaultLanguage;
 
 			// Init Client Soap object
 			try {
