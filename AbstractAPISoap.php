@@ -124,7 +124,17 @@ namespace Netim {
             $this->_defaultLanguage = $defaultLanguage;
 
 			// Init Client Soap object
-			$this->_clientSOAP = new SoapClient($this->_apiURL);
+			try {
+				$header  = @get_headers($apiURL);
+				if ($header[0] != 'HTTP/1.1 200 OK') {
+					throw new SoapFault($header[0], $header[0]);
+				}
+				$this->_clientSOAP = new SoapClient($this->_apiURL, array('trace' => 1, 'exceptions' => 1, 'connection_timeout' => 5));
+
+			} catch (SoapFault $fault) {
+				include_once __DIR__ . "/../lib/Core.php";
+				throw new NetimAPIexception($fault->getMessage());
+			}
 		}
 
 		public function __destruct()
