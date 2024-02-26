@@ -132,13 +132,16 @@ namespace Netim {
 			// Init Client Soap object
 			try {
 				$header  = @get_headers($apiURL);
-				if ($header[0] != 'HTTP/1.1 200 OK') {
+				if ($header !== false && $header[0] != 'HTTP/1.1 200 OK') {
 					throw new SoapFault($header[0], $header[0]);
 				}
 				$this->_clientSOAP = new SoapClient($this->_apiURL, array('trace' => 1, 'exceptions' => 1, 'connection_timeout' => 5));
 
 			} catch (SoapFault $fault) {
-				include_once __DIR__ . "/../lib/Core.php";
+				$file = __DIR__ . "/../lib/Core.php";
+				if (file_exists($file)) {
+					include_once $file;
+				}
 				throw new NetimAPIexception($fault->getMessage());
 			}
 		}
@@ -186,6 +189,11 @@ namespace Netim {
 		public function getPreferences($key = null)
 		{
 			return (isset($key)) ? $this->_preferences[$key] : $this->_preferences;
+		}
+
+		public function getSessionID()
+		{
+			return $this->_sessionID;
 		}
 
 		# ---------------------------------------------------
@@ -246,19 +254,16 @@ namespace Netim {
 				    array_unshift($params, $this->_sessionID);                
 				$res = call_user_func_array(array($this->_clientSOAP, $fn), $params);
 				$this->_lastResponse = $res;
+
 			} catch (NetimAPIException $exception) {
 				$this->_lastError = $exception->getMessage();
 				throw new NetimAPIexception($exception->getMessage(), $exception->getCode(), $exception);
+
 			} catch (SoapFault $fault) {
-				if (!($fn == "sessionClose" && str_contains($fault->getMessage(), "E02")))
-				{
-					$this->_lastError = $fault->getMessage();
-					throw new NetimAPIexception($fault->getMessage(), $fault->getCode(), $fault);
-				}
-				else
-					return;
+				$this->_lastError = $fault->getMessage();
+				throw new NetimAPIexception($fault->getMessage(), $fault->getCode(), $fault);
 			}
-            
+
             if ($fn == "sessionClose")
             {
                 $this->_connected = false;
@@ -394,7 +399,12 @@ namespace Netim {
         
 		# -------------------------------------------------
 		# OPERATIONS
-		# -------------------------------------------------	 
+		# -------------------------------------------------	
+		public function opeInfo(int $operationID)
+		{
+			$params[] = $operationID;
+			return $this->_launchCommand('opeInfo', $params);
+		}
 
         /**
 		 * Cancel a pending operation
