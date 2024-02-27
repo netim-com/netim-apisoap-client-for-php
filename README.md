@@ -9,7 +9,7 @@ For the login and the secret you can also override them at the instantiation of 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
-    <url>http://drs.ote.netim.com/2.0/api.wsdl</url>
+    <url>http://oteapi.netim.com/2.0/api.wsdl</url>
     <login>login</login>
     <password>password</password>
     <language>EN</language>
