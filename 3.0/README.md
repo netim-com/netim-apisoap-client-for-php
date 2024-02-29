@@ -1,3 +1,5 @@
+# APISoap-client-php 3.0
+
 ## Description
 This client is designed to communicate with the netim SOAP API.
 It can be integrated into all your PHP projects.
