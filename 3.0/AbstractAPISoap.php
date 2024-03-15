@@ -1689,37 +1689,7 @@ namespace Netim {
 			$params[] = $tld;
 			return $this->_launchCommand('domainTldInfo', $params);
 		}
-		
-		/**
-		 * Returns whois informations on given domain
-		 * 
-		 * Example:
-		 *	```php
-		 *	$res = null;
-		 *	try
-		 *	{
-		 *		$res = $client->domainWhois("myDomain.com");
-		 *	}
-		 *	catch (NetimAPIexception $exception)
-		 *	{
-		 *		//do something about the error
-		 *	}
-		 *
-		 *	//continue processing
-		 *	```
-		 *	
-		 * @param string $domain the domain's name
-		 *
-		 * @throws NetimAPIException
-		 *
-		 * @return string information about the domain
-		 */
-		public function domainWhois(string $domain):string
-		{
-			$params[] = strtolower($domain);
-			return $this->_launchCommand('domainWhois', $params);
-		}
-		
+
 		/**
 		 * Allows to sign a domain name with DNSSEC if it doesn't use NETIM DNS servers 
 		 * 
