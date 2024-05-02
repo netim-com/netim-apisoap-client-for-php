@@ -913,16 +913,15 @@ namespace Netim {
 		 *	$idAdmin = 'BJ007';
 		 *	$idTech = 'BJ007';
 		 *	$idBilling = 'BJ007';
-		 *	$ns1 = 'ns1.netim.com';
-		 *	$ns2 = 'ns2.netim.com';
-		 *	$ns3 = 'ns3.netim.com'; 
-		 *	$ns4 = 'ns4.netim.com';
-		 *	$ns5 = 'ns5.netim.com';
+		 *	$nameservers = [
+		 *		1 => ['name' => 'ns1.netim.com']
+		 * 		2 => ['name' => 'ns2.netim.com']
+		 *  ];
 		 *	$duration = 1;
 		 *	$res = null;
 		 *	try
 		 *	{
-		 *		$res = $client->domainCreate($domain, $idOwner, $idAdmin, $idTech, $idBilling, $ns1, $ns2, $ns3, $ns4, $ns5, $duration);
+		 *		$res = $client->domainCreate($domain, $idOwner, $idAdmin, $idTech, $idBilling, $nameservers, $duration);
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -936,11 +935,7 @@ namespace Netim {
 		 * @param string $idTech the id of the tech for the new domain
 		 * @param string $idBilling the id of the billing for the new domain
 		 *                          To get an ID, you can call contactCreate() with the appropriate information
-		 * @param string $ns1 the name of the first dns
-		 * @param string $ns2 the name of the second dns
-		 * @param string $ns3 the name of the third dns
-		 * @param string $ns4 the name of the fourth dns
-		 * @param string $ns5 the name of the fifth dns
+		 * @param array $nameservers the nameservers for the domain
 		 * @param int $duration how long the domain will be created
 		 * @param array $options additional options
 		 *
@@ -950,7 +945,7 @@ namespace Netim {
 		 *
 		 * @see domainCreate API http://support.netim.com/en/wiki/DomainCreate 
 		 */
-		public function domainCreate(string $domain, string $idOwner, string $idAdmin, string $idTech, string $idBilling, string $ns1, string $ns2, string $ns3, string $ns4, string $ns5, int $duration, array $options = null):stdClass
+		public function domainCreate(string $domain, string $idOwner, string $idAdmin, string $idTech, string $idBilling, array $nameservers, int $duration, array $options = null):stdClass
 		{
 			$params[] = strtolower($domain);
 
@@ -958,13 +953,7 @@ namespace Netim {
 			$params[] = $idAdmin;
 			$params[] = $idTech;
 			$params[] = $idBilling;
-
-			$params[] = $ns1;
-			$params[] = $ns2;
-			$params[] = $ns3;
-			$params[] = $ns4;
-			$params[] = $ns5;
-
+			$params[] = $nameservers;
 			$params[] = $duration;
 
 			if (isset($options)) {
@@ -1017,17 +1006,16 @@ namespace Netim {
 		 *	$idAdmin = 'BJ007';
 		 *	$idTech = 'BJ007';
 		 *	$idBilling = 'BJ007';
-		 *	$ns1 = 'ns1.netim.com';
-		 *	$ns2 = 'ns2.netim.com';
-		 *	$ns3 = 'ns3.netim.com';
-		 *	$ns4 = 'ns4.netim.com';
-		 *	$ns5 = 'ns5.netim.com';
+		 *	$nameservers = [
+		 *		1 => ['name' => 'ns1.netim.com']
+		 * 		2 => ['name' => 'ns2.netim.com']
+		 *  ];
 		 *	$duration = 1;
 		 *	$phase = 'GA';
 		 *	$res = null;
 		 *	try
 		 *	{
-		 *		$res = $client->domainCreateLP($domain, $idOwner, $idAdmin, $idTech, $idBilling, $ns1, $ns2, $ns3, $ns4, $ns5, $duration, $phase);
+		 *		$res = $client->domainCreateLP($domain, $idOwner, $idAdmin, $idTech, $idBilling, $nameservers, $duration, $phase);
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -1041,11 +1029,7 @@ namespace Netim {
 		 * @param string $idTech the id of the tech for the new domain
 		 * @param string $idBilling the id of the billing for the new domain
 		 *                          To get an ID, you can call contactCreate() with the appropriate information
-		 * @param string $ns1 the name of the first dns
-		 * @param string $ns2 the name of the second dns
-		 * @param string $ns3 the name of the third dns
-		 * @param string $ns4 the name of the fourth dns
-		 * @param string $ns5 the name of the fifth dns
+		 * @param array $nameservers the nameservers for the domain
 		 * @param int $duration how long the domain will be created
 		 * @param string $phase the id of the launch phase
 		 *
@@ -1055,7 +1039,7 @@ namespace Netim {
 		 *
 		 * @see domainCreateLP API http://support.netim.com/en/wiki/DomainCreateLP 
 		 */
-		public function domainCreateLP(string $domain, string $idOwner, string $idAdmin, string $idTech, string $idBilling, string $ns1, string $ns2, string $ns3, string $ns4, string $ns5, int $duration, string $phase):stdClass
+		public function domainCreateLP(string $domain, string $idOwner, string $idAdmin, string $idTech, string $idBilling, array $nameservers, int $duration, string $phase):stdClass
 		{
 			$params[] = strtolower($domain);
 
@@ -1063,13 +1047,7 @@ namespace Netim {
 			$params[] = $idAdmin;
 			$params[] = $idTech;
 			$params[] = $idBilling;
-
-			$params[] = $ns1;
-			$params[] = $ns2;
-			$params[] = $ns3;
-			$params[] = $ns4;
-			$params[] = $ns5;
-
+			$params[] = $nameservers;
 			$params[] = $duration;
 
 			$params[] = $phase;
@@ -1123,15 +1101,14 @@ namespace Netim {
 		 *	$idAdmin = 'BJ007';
 		 *	$idTech = 'BJ007';
 		 *	$idBilling = 'BJ007';
-		 *	$ns1 = 'ns1.netim.com';
-		 *	$ns2 = 'ns2.netim.com';
-		 *	$ns3 = 'ns3.netim.com'; 
-		 *	$ns4 = 'ns4.netim.com';
-		 *	$ns5 = 'ns5.netim.com';
+		 *	$nameservers = [
+		 *		1 => ['name' => 'ns1.netim.com']
+		 * 		2 => ['name' => 'ns2.netim.com']
+		 *  ];
 		 *	$res = null;
 		 *	try
 		 *	{
-		 *		$res = $client->domainTransferIn($domain, $authID, $idOwner, $idAdmin, $idTech, $idBilling, $ns1, $ns2, $ns3, $ns4, $ns5);
+		 *		$res = $client->domainTransferIn($domain, $authID, $idOwner, $idAdmin, $idTech, $idBilling, $nameservers);
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -1146,11 +1123,7 @@ namespace Netim {
 		 * @param string $idAdmin a valid idAdmin
 		 * @param string $idTech a valid idTech
 		 * @param string $idBilling a valid idBilling
-		 * @param string $ns1 the name of the first dns
-		 * @param string $ns2 the name of the second dns
-		 * @param string $ns3 the name of the third dns
-		 * @param string $ns4 the name of the fourth dns
-		 * @param string $ns5 the name of the fifth dns
+		 * @param array $nameservers the nameservers for the domain
 		 * @param array $options additional options
 		 *
 		 * @throws NetimAPIException
@@ -1159,7 +1132,7 @@ namespace Netim {
 		 *
 		 * @see domainTransferIn API http://support.netim.com/en/wiki/DomainTransferIn
 		 */
-		public function domainTransferIn(string $domain, string $authID, string $idOwner, string $idAdmin, string $idTech, string $idBilling, string $ns1, string $ns2, string $ns3, string $ns4, string $ns5, array $options = null):stdClass
+		public function domainTransferIn(string $domain, string $authID, string $idOwner, string $idAdmin, string $idTech, string $idBilling, array $nameservers, array $options = null):stdClass
 		{
 			$params[] = strtolower($domain);
 			$params[] = $authID;
@@ -1168,12 +1141,7 @@ namespace Netim {
 			$params[] = $idAdmin;
 			$params[] = $idTech;
 			$params[] = $idBilling;
-
-			$params[] = $ns1;
-			$params[] = $ns2;
-			$params[] = $ns3;
-			$params[] = $ns4;
-			$params[] = $ns5;
+			$params[] = $nameservers;
 
 			if (isset($options)) {
 				$params[] = $options;
@@ -1193,15 +1161,14 @@ namespace Netim {
 		 *	$idAdmin = 'BJ007';
 		 *	$idTech = 'BJ007';
 		 *	$idBilling = 'BJ007';
-		 *	$ns1 = 'ns1.netim.com';
-		 *	$ns2 = 'ns2.netim.com';
-		 *	$ns3 = 'ns3.netim.com'; 
-		 *	$ns4 = 'ns4.netim.com';
-		 *	$ns5 = 'ns5.netim.com';
+		 *	$nameservers = [
+		 *		1 => ['name' => 'ns1.netim.com']
+		 * 		2 => ['name' => 'ns2.netim.com']
+		 *  ];
 		 *	$res = null;
 		 *	try
 		 *	{
-		 *		$res = $client->domainTransferTrade($domain, $authID, $idOwner, $idAdmin, $idTech, $idBilling, $ns1, $ns2, $ns3, $ns4, $ns5);
+		 *		$res = $client->domainTransferTrade($domain, $authID, $idOwner, $idAdmin, $idTech, $idBilling, $nameservers);
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -1216,11 +1183,7 @@ namespace Netim {
 		 * @param string $idAdmin a valid idAdmin
 		 * @param string $idTech a valid idTech
 		 * @param string $idBilling a valid idBilling
-		 * @param string $ns1 the name of the first dns
-		 * @param string $ns2 the name of the second dns
-		 * @param string $ns3 the name of the third dns
-		 * @param string $ns4 the name of the fourth dns
-		 * @param string $ns5 the name of the fifth dns
+		 * @param array $nameservers the nameservers for the domain
 		 * @param array $options additional options
 		 *
 		 * @throws NetimAPIException
@@ -1229,7 +1192,7 @@ namespace Netim {
 		 *
 		 * @see domainTransferTrade API http://support.netim.com/en/wiki/domainTransferTrade
 		 */
-		public function domainTransferTrade(string $domain, string $authID, string $idOwner, string $idAdmin, string $idTech, string $idBilling, string $ns1, string $ns2, string $ns3, string $ns4, string $ns5, array $options = null):stdClass
+		public function domainTransferTrade(string $domain, string $authID, string $idOwner, string $idAdmin, string $idTech, string $idBilling, array $nameservers, array $options = null):stdClass
 		{
 			$params[] = strtolower($domain);
 			$params[] = $authID;
@@ -1238,12 +1201,7 @@ namespace Netim {
 			$params[] = $idAdmin;
 			$params[] = $idTech;
 			$params[] = $idBilling;
-
-			$params[] = $ns1;
-			$params[] = $ns2;
-			$params[] = $ns3;
-			$params[] = $ns4;
-			$params[] = $ns5;
+			$params[] = $nameservers;
 
 			if (isset($options)) {
 				$params[] = $options;
@@ -1262,15 +1220,14 @@ namespace Netim {
 		 *	$idAdmin = 'BJ007';
 		 *	$idTech = 'BJ007';
 		 *	$idBilling = 'BJ007';
-		 *	$ns1 = 'ns1.netim.com';
-		 *	$ns2 = 'ns2.netim.com';
-		 *	$ns3 = 'ns3.netim.com'; 
-		 *	$ns4 = 'ns4.netim.com';
-		 *	$ns5 = 'ns5.netim.com';
+		 *	$nameservers = [
+		 *		1 => ['name' => 'ns1.netim.com']
+		 * 		2 => ['name' => 'ns2.netim.com']
+		 *  ];
 		 *	$res = null;
 		 *	try
 		 *	{
-		 *		$res = $client->domainTransferTrade($domain, $authID, $idAdmin, $idTech, $idBilling, $ns1, $ns2, $ns3, $ns4, $ns5);
+		 *		$res = $client->domainTransferTrade($domain, $authID, $idAdmin, $idTech, $idBilling, $nameservers);
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -1284,11 +1241,7 @@ namespace Netim {
 		 * @param string $idAdmin a valid idAdmin
 		 * @param string $idTech a valid idTech
 		 * @param string $idBilling a valid idBilling
-		 * @param string $ns1 the name of the first dns
-		 * @param string $ns2 the name of the second dns
-		 * @param string $ns3 the name of the third dns
-		 * @param string $ns4 the name of the fourth dns
-		 * @param string $ns5 the name of the fifth dns
+		 * @param array $nameservers the nameservers for the domain
 		 *
 		 * @throws NetimAPIException
 		 *
@@ -1296,7 +1249,7 @@ namespace Netim {
 		 *
 		 * @see domainInternalTransfer API http://support.netim.com/en/wiki/domainInternalTransfer
 		 */
-		public function domainInternalTransfer(string $domain, string $authID, string $idAdmin, string $idTech, string $idBilling, string $ns1, string $ns2, string $ns3, string $ns4, string $ns5):stdClass
+		public function domainInternalTransfer(string $domain, string $authID, string $idAdmin, string $idTech, string $idBilling, array $nameservers):stdClass
 		{
 			$params[] = strtolower($domain);
 			$params[] = $authID;
@@ -1304,12 +1257,7 @@ namespace Netim {
 			$params[] = $idAdmin;
 			$params[] = $idTech;
 			$params[] = $idBilling;
-
-			$params[] = $ns1;
-			$params[] = $ns2;
-			$params[] = $ns3;
-			$params[] = $ns4;
-			$params[] = $ns5;
+			$params[] = $nameservers;
 
 			return $this->_launchCommand('domainInternalTransfer', $params);
 		}
@@ -1516,15 +1464,14 @@ namespace Netim {
 		 * Example
 		 *	```php
 		 *	$domain = 'myDomain.com';
-		 *	$ns1 = 'ns1.netim.com';
-		 *	$ns2 = 'ns2.netim.com';
-		 *	$ns3 = 'ns3.netim.com';
-		 *	$ns4 = 'ns4.netim.com';
-		 *	$ns5 = 'ns5.netim.com';
+		 *	$nameservers = [
+		 *		1 => ['name' => 'ns1.netim.com']
+		 * 		2 => ['name' => 'ns2.netim.com']
+		 *  ];
 		 *	$res = null;
 		 *	try
 		 *	{
-		 *		$res = $client->domainChangeDNS($domain, $ns1, $ns2, $ns3, $ns4, $ns5);
+		 *		$res = $client->domainChangeDNS($domain, $nameservers);
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -1534,11 +1481,7 @@ namespace Netim {
 		 *	```
 		 * 
 		 * @param string $domain name of the domain
-		 * @param string $ns1 the name of the first dns
-		 * @param string $ns2 the name of the second dns
-		 * @param string $ns3 the name of the third dns
-		 * @param string $ns4 the name of the fourth dns
-		 * @param string $ns5 the name of the fifth dns
+		 * 
 		 *
 		 * @throws NetimAPIException
 		 *
@@ -1546,14 +1489,11 @@ namespace Netim {
 		 *
 		 * @see domainChangeDNS API http://support.netim.com/en/wiki/DomainChangeDNS
 		 */
-		public function domainChangeDNS(string $domain, string $ns1, string $ns2, string $ns3 = "", string $ns4 = "", string $ns5 = ""):stdClass
+		public function domainChangeDNS(string $domain, array $nameservers):stdClass
 		{
 			$params[] = strtolower($domain);
-			$params[] = $ns1;
-			$params[] = $ns2;
-			$params[] = $ns3;
-			$params[] = $ns4;
-			$params[] = $ns5;
+			$params[] = $nameservers;
+
 			return $this->_launchCommand('domainChangeDNS', $params);
 		}
         
