@@ -1755,7 +1755,7 @@ namespace Netim {
 		 * Resets all DNS settings from a template 
 		 * 
 		 * @param string 	$domain Domain name
-		 * @param int 		$numTemplate Template number
+		 * @param int 		$templateDNS Template number
 		 * 
 		 * @throws NetimAPIException
 		 * 
@@ -1765,10 +1765,10 @@ namespace Netim {
 		 * 
 		 * 
 		 */
-		public function domainZoneInit(string $domain, int $numTemplate):stdClass
+		public function domainZoneInit(string $domain, int $templateDNS):stdClass
 		{
 			$params[] = $domain;
-			$params[] = $numTemplate;
+			$params[] = $templateDNS;
 			return $this->_launchCommand('domainZoneInit', $params);
 		}
 
@@ -2934,16 +2934,16 @@ namespace Netim {
 		 * Resets all DNS settings from a template 
 		 * 
 		 * @param string $domain
-		 * @param int $profil
+		 * @param int $templateDNS
 		 * 
 		 * @throws NetimAPIException
 		 * 
 		 * @return StructOperationResponse giving information on the status of the operation
 		 */
-		public function webHostingZoneInit(string $domain, int $profil):stdClass
+		public function webHostingZoneInit(string $domain, int $templateDNS):stdClass
 		{
 			$params[] = $domain;
-			$params[] = $profil;
+			$params[] = $templateDNS;
 
 			return $this->_launchCommand('webHostingZoneInit', $params);
 		}
