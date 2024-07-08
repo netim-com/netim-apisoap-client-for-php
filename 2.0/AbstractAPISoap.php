@@ -1552,39 +1552,7 @@ namespace Netim {
 			$params[] = $sendToRegistrant;
 			return $this->_launchCommand('domainAuthID', $params);
 		}
-        
-        /**
-		 * Release a domain name (managed by the reseller) to its registrant (who will become a direct customer at Netim) 
-		 *
-		 * Example
-		 *	```php
-		 *	$domain = 'myDomain.com';
-		 *	$res = null;
-		 *	try
-		 *	{
-		 *		$res = $client->domainRelease($domain);
-		 *	}
-		 *	catch (NetimAPIexception $exception)
-		 *	{
-		 *		//do something when operation had an error
-		 *	}
-		 *	//continue processing
-		 *	```
-		 *
-		 * @param string $domain domain name to be released
-		 *
-		 * @throws NetimAPIException
-		 *
-		 * @return StructOperationResponse giving information on the status of the operation
-		 *
-		 * @see domainRelease API http://support.netim.com/en/wiki/DomainRelease
-		 */
-		public function domainRelease(string $domain):stdClass
-		{
-			$params[] = strtolower($domain);
-			return $this->_launchCommand('domainRelease', $params);
-		}
-        
+
 		/**
 		 * Adds a membership to the domain name 
 		 *
