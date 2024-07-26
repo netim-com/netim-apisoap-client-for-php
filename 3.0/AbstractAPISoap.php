@@ -1794,6 +1794,32 @@ namespace Netim {
 		}
 
 		/**
+		 * Updates a DNS record from the domain's zonefile
+		 *
+		 * @param	string	$domain name of the domain
+		 * @param	string	$subdomain subdomain
+		 * @param	string	$type type of DNS record. Accepted values are: 'A', 'AAAA', 'MX, 'CNAME', 'TXT', 'NS and 'SRV'
+		 * @param	string	$value current value of the DNS record
+		 * @param	string	$newValue new value of the DNS record
+		 * @param	array	$options StructZoneParam : settings of the new DNS record 
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return StructOperationResponse giving information on the status of the operation
+		 */
+		public function domainZoneUpdate(string $domain, string $subdomain, string $type, string $value, string $newValue, array $options): stdClass
+		{
+			$params[] = strtolower($domain);
+			$params[] = $subdomain;
+			$params[] = $type;
+			$params[] = $value;
+			$params[] = $newValue;
+			$params[] = $options;
+
+			return $this->_launchCommand('domainZoneUpdate', $params);
+		}
+
+		/**
 		 * Deletes a DNS record into the domain's zonefile 
 		 *
 		 * Example
@@ -3000,6 +3026,32 @@ namespace Netim {
 			$params[] = $options;
 
 			return $this->_launchCommand('webHostingZoneCreate', $params);
+		}
+
+		/**
+		 * Updates a DNS record from the webhosting domain zonefile
+		 * 
+		 * @param	string	$domain name of the domain
+		 * @param	string	$subdomain subdomain
+		 * @param	string	$type type of DNS record. Accepted values are: 'A', 'AAAA', 'MX, 'CNAME', 'TXT', 'NS and 'SRV'
+		 * @param	string	$value value of the new DNS record
+		 * @param	string	$newValue new value of the DNS record
+		 * @param	array	$options  StructZoneParam : settings of the new DNS record
+		 * 
+		 * @throws	NetimAPIException
+		 * 
+		 * @return	StructOperationResponse	giving information on the status of the operation
+		 */
+		public function webHostingZoneUpdate(string $domain, string $subdomain, string $type, string $value, string $newValue, array $options): stdClass
+		{
+			$params[] = strtolower($domain);
+			$params[] = strtolower($subdomain);
+			$params[] = $type;
+			$params[] = $value;
+			$params[] = $newValue;
+			$params[] = $options;
+
+			return $this->_launchCommand('webHostingZoneUpdate', $params);
 		}
 
 		/**
