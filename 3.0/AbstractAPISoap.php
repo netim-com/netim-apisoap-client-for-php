@@ -1924,6 +1924,21 @@ namespace Netim {
 		}
 
 		/**
+		 * Returns informations about a DNS zone
+		 * 
+		 * @param string 	$domain Domain name
+		 * 
+		 * @throws NetimAPIException
+		 * 
+		 * @return Array
+		 */
+		public function domainZoneInfo(string $domain):stdClass
+		{
+			$params[] = $domain;
+			return $this->_launchCommand('domainZoneInfo', $params);
+		}
+
+		/**
 		 * Returns all DNS records of a domain name 
 		 * 
 		 * @param string $domain Domain name
