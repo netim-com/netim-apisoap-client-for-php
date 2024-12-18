@@ -2,7 +2,7 @@
 
 /** 
  * @created 03/10/17
- * @lastUpdated 31/08/21
+ * @lastUpdated 18/12/24
  * @version 2.0.0
  *  
  * Generic class for a client API. Handle the SOAP connection to NETIM's API, and many operation described here: http://support.netim.com/en/wiki/Category:Functions
@@ -1527,7 +1527,6 @@ namespace Netim {
 		 *	try
 		 *	{
 		 *		$res = $client->domainAuthID($domain, 0);
-		 *		//$res = $client->domainAuthID($domain, 1); to send the authID in an email to the registrant of the domain
 		 *	}
 		 *	catch (NetimAPIexception $exception)
 		 *	{
@@ -1536,19 +1535,19 @@ namespace Netim {
 		 *	//continue processing
 		 *	```
 		 *
-		 * @param string $domain name of the domain to get the AuthID
-		 * @param int $sendToRegistrant recipient of the AuthID. Possible value are 0 for the reseller and 1 for the registrant
+		 * @param	string	$domain	name of the domain to get the AuthID
+		 * @param	int		$sendTo	Send the authorization code to 0: Reseller, 1: Registrant, 2: None
 		 *
 		 * @throws NetimAPIException
 		 *
 		 * @return StructOperationResponse giving information on the status of the operation
 		 *
-		 * @see domainAuthID API http://support.netim.com/en/wiki/DomainAuthID
+		 * @see domainAuthID API https://support.netim.com/en/docs/api-soap-3-0/domain-names/send-authid
 		 */
-		public function domainAuthID(string $domain, int $sendToRegistrant):stdClass
+		public function domainAuthID(string $domain, int $sendTo):stdClass
 		{
 			$params[] = $domain;
-			$params[] = $sendToRegistrant;
+			$params[] = $sendTo;
 			return $this->_launchCommand('domainAuthID', $params);
 		}
 
