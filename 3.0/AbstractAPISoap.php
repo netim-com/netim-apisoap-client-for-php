@@ -2,8 +2,8 @@
 
 /** 
  * @created 03/10/17
- * @lastUpdated 18/12/24
- * @version 2.0.0
+ * @lastUpdated 11/02/25
+ * @version 3.0.0
  *  
  * Generic class for a client API. Handle the SOAP connection to NETIM's API, and many operation described here: http://support.netim.com/en/wiki/Category:Functions
  * 
@@ -1620,30 +1620,61 @@ namespace Netim {
 		}
 
 		/**
-		 * Allows to sign a domain name with DNSSEC if it doesn't use NETIM DNS servers 
-		 * 
-		 * @param string 	$domain name of the domain
-		 * @param array		$DSRecords An object StructDSRecord
-		 * @param int 		$flags
-		 * @param int		$protocol
-		 * @param int		$algo
-		 * @param string	$pubKey
-		 * 
-		 * @throws NetimAPIException
-		 * 
-		 * @return StructOperationResponse giving information on the status of the operation
-		 * 
-		 * @see domainSetDNSSecExt API http://support.netim.com/en/wiki/DomainSetDNSSecExt
+		 * Add DS records to a domain if it does not use NETIM’s DNS servers.
+		 *
+		 * @param	string	$domain		Domain name
+		 * @param	array	$data		Array of dsData or keyData to be added
+		 *
+		 * @return	StructOperationResponse		Operation result
+		 *
+		 * @see		https://support.netim.com/en/docs/api-soap-3-0/domain-names/ds-record-create
 		 */
-		public function domainSetDNSSecExt(string $domain, array $DSRecords, int $flags, int $protocol, int $algo, string $pubKey):stdClass
+		public function domainDSRecordCreate(string $domain, array $data = [])
 		{
-			$params[] = $domain;
-			$params[] = $DSRecords;
-			$params[] = $flags;
-			$params[] = $protocol;
-			$params[] = $algo;
-			$params[] = $pubKey;
-			return $this->_launchCommand('domainSetDNSSecExt', $params);
+			return $this->_launchCommand('domainDSRecordCreate', [$domain, $data]);
+		}
+
+		/**
+		 * Remove DS records from a domain if it does not use NETIM’s DNS servers.
+		 *
+		 * @param	string	$domain		Domain name
+		 * @param	array	$data		Array of dsData or keyData to be removed
+		 *
+		 * @return	StructOperationResponse		Operation result
+		 *
+		 * @see		https://support.netim.com/en/docs/api-soap-3-0/domain-names/ds-record-delete
+		 */
+		public function domainDSRecordDelete(string $domain, array $data = [])
+		{
+			return $this->_launchCommand('domainDSRecordDelete', [$domain, $data]);
+		}
+
+		/**
+		 * Remove all DS records from a domain if it does not use NETIM’s DNS servers.
+		 *
+		 * @param	string	$domain		Domain name
+		 *
+		 * @return	StructOperationResponse		Operation result
+		 *
+		 * @see		https://support.netim.com/en/docs/api-soap-3-0/domain-names/ds-record-delete-all
+		 */
+		public function domainDSRecordDeleteAll(string $domain)
+		{
+			return $this->_launchCommand('domainDSRecordDeleteAll', [$domain]);
+		}
+		
+		/**
+		 * List DS records of a domain if it does not use NETIM’s DNS servers.
+		 *
+		 * @param	string	$domain		Domain name
+		 *
+		 * @return	StructOperationResponse		Operation result
+		 *
+		 * @see		https://support.netim.com/en/docs/api-soap-3-0/domain-names/ds-record-list
+		 */
+		public function domainDSRecordList(string $domain)
+		{
+			return $this->_launchCommand('domainDSRecordList', [$domain]);
 		}
 
 		/**
