@@ -1969,6 +1969,26 @@ namespace Netim {
 		}
 
 		/**
+		 * Investigates the state of the domain name from the top to the bottom of the DNS tree.
+		 *
+		 * @param	string	$domain		Domain name
+		 * @param	array	$filters	Filters to apply to the list
+		 *
+		 * @throws	NetimAPIException
+		 *
+		 * @return	array
+		 * 
+		 */
+		public function domainZoneCheck(string $domain, array $nameservers)
+		{
+			$params = array(
+				$domain,
+				$nameservers,
+			);
+			return $this->_launchCommand('domainZoneCheck', $params);
+		}
+
+		/**
 		 * Returns all DNS records of a domain name 
 		 * 
 		 * @param string $domain Domain name
@@ -2288,6 +2308,23 @@ namespace Netim {
 			$params[] = $IDSSL;
 
 			return $this->_launchCommand('sslInfo', $params);
+		}
+
+		/**
+		 * Returns informations about a DNS zone
+		 * 
+		 * @param	array	$filter	Filters to apply to the list
+		 * 
+		 * @throws NetimAPIException
+		 * 
+		 * @return Array
+		 */
+		public function sslList(array $filters)
+		{
+			$params = array(
+				$filters
+			);
+			return $this->_launchCommand('sslList', $filters);
 		}
 
 		/**
