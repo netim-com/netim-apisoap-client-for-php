@@ -3158,6 +3158,13 @@ namespace Netim {
 			return $this->_launchCommand('webHostingZoneDelete', $params);
 		}
 
+		public function brandProtectionList(string $filters) {
+			$params = [
+				$filters,
+			];
+			return $this->_launchCommand('brandProtectionList', $params);
+		}
+
 		//helpers for domainSetPreference
 		public function domainSetRegistrarLock($domain, $value)
 		{
