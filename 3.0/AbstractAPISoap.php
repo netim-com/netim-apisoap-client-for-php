@@ -311,15 +311,13 @@ namespace Netim {
 		 * Returns the list of parameters reseller account
 		 *
 		 *
-		 * @return StructQueryResellerAccount A structure of StructQueryResellerAccount containing the information
+		 * @return StructAccountInfo A structure of StructAccountInfo containing the information
 		 * 
 		 * @throws NetimAPIException
-		 *
-		 * @see queryResellerAccount API https://support.netim.com/en/wiki/QueryResellerAccount
 		 */
-        public function queryResellerAccount():stdClass
+        public function accountInfo():stdClass
 		{
-			return $this->_launchCommand('queryResellerAccount');
+			return $this->_launchCommand('accountInfo');
 		}
 
 		# -------------------------------------------------
@@ -1728,13 +1726,11 @@ namespace Netim {
 		 * 
 		 * @return int 0: no claim ; 1: at least one claim
 		 * 
-		 * @see queryDomainClaim API https://support.netim.com/en/wiki/QueryDomainClaim
-		 * 
 		 */
-		public function queryDomainClaim(string $domain):int
+		public function domainCheckClaims(string $domain):int
 		{
 			$params[] = $domain;
-			return $this->_launchCommand('queryDomainClaim', $params);
+			return $this->_launchCommand('domainCheckClaims', $params);
 		}
 
 		/**
@@ -1995,15 +1991,13 @@ namespace Netim {
 		 * 
 		 * @throws NetimAPIException
 		 * 
-		 * @return array An array of StructQueryZoneList
-		 *
-		 * @see queryZoneList API https://support.netim.com/en/wiki/QueryZoneList
+		 * @return array An array of StructDomainZoneList
 		 *
 		 */
-		public function queryZoneList(string $domain):array
+		public function domainZoneList(string $domain):array
 		{
 			$params[] = strtolower($domain);
-			return $this->_launchCommand('queryZoneList', $params);
+			return $this->_launchCommand('domainZoneList', $params);
 		}
 
 		/**
@@ -2080,14 +2074,12 @@ namespace Netim {
 		 * 
 		 * @throws NetimAPIException
 		 * 
-		 * @return array An array of StructQueryMailFwdList
-		 * 
-		 * @see queryMailFwdList API https://support.netim.com/en/wiki/QueryMailFwdList
+		 * @return array An array of StructDomainMailFwdList
 		 */
-		public function queryMailFwdList(string $domain):array
+		public function domainMailFwdList(string $domain):array
 		{
 			$params[] = strtolower($domain);
-			return $this->_launchCommand('queryMailFwdList', $params);
+			return $this->_launchCommand('domainMailFwdList', $params);
 		}
 
 		/**
@@ -2173,15 +2165,13 @@ namespace Netim {
 		 * 
 		 * @throws NetimAPIException
 		 * 
-		 * @return array An array of StructQueryWebFwdList
-		 *
-		 * @see queryWebFwdList API https://support.netim.com/en/wiki/QueryWebFwdList
+		 * @return array An array of StructDomainWebFwdList
 		 *
 		 */
-		public function queryWebFwdList(string $domain):array
+		public function domainWebFwdList(string $domain):array
 		{
 			$params[] = $domain;
-			return $this->_launchCommand('queryWebFwdList', $params);
+			return $this->_launchCommand('domainWebFwdList', $params);
 		}
 
 		/**
@@ -3075,7 +3065,7 @@ namespace Netim {
 		 * 
 		 * @throws NetimAPIException
 		 * 
-		 * @return StructQueryZoneList[]
+		 * @return StructDomainZoneList[]
 		 */
 		public function webHostingZoneList(string $domain):array
 		{
