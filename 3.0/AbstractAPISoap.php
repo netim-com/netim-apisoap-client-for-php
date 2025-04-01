@@ -91,8 +91,8 @@ namespace Netim {
 		private $_sessionID;
 		private $_clientSOAP;
 
-		private $_name;
-		private $_key;
+		private $_userID;
+		private $_password;
 		private $_apiURL;
         private $_preferences;
 
@@ -104,24 +104,24 @@ namespace Netim {
 		/**
 		 * Constructor for class AbstractAPISoap
 		 *
-		 * @param	string	$name			Name of the API key
-		 * @param	string	$key			Value of the API key
+		 * @param	string	$userID			the ID the client uses to connect to his NETIM account
+		 * @param	string	$password		the PASSWORD the client uses to connect to his NETIM account
 		 * @param	string	$apiURL			the URL of the API
 		 * @param	array	$preferences	the preferences of the API session
 		 *	 
-		 * @throws	Error	if $name, $key or $apiURL are not string or are empty
+		 * @throws	Error	if $userID, $password or $apiURL are not string or are empty
 		 * 
 		 * @link semantic versionning http://semver.org/ by Tom Preston-Werner 
 		 */
-		protected function __construct(string $name, string $key, string $apiURL, array $preferences)
+		protected function __construct(string $userID, string $password, string $apiURL, array $preferences)
 		{
 			register_shutdown_function([&$this, "__destruct"]);
 			// Init variables
 			$this->_connected = false;
 			$this->_sessionID = null;
 
-			$this->_name = $name;
-			$this->_key = $key;
+			$this->_userID = $userID;
+			$this->_password = $password;
 			$this->_apiURL = $apiURL;
 
 			$this->_preferences = $preferences;
@@ -178,13 +178,13 @@ namespace Netim {
 			return $this->_lastError;
 		}
 
-		public function getName()
+		public function getUserID()
 		{
-			return $this->_name;
+			return $this->_userID;
 		}
-		public function getKey()
+		public function getPassword()
 		{
-			return $this->_key;
+			return $this->_password;
 		}
 		public function getPreferences($key = null)
 		{
@@ -332,8 +332,8 @@ namespace Netim {
 		public function sessionOpen(): void
 		{
 			$params = array(
-				$this->getName(),
-				$this->getKey(),
+				$this->getUserID(),
+				$this->getPassword(),
 				$this->getPreferences(),
 			);
 
@@ -595,7 +595,7 @@ namespace Netim {
 		 *
 		 * @see	hostList API http://support.netim.com/en/wiki/hostList
 		 */
-		public function hostList(array $filters):array
+		public function hostList(array $filters = []):array
 		{
 			$params = array(
 				$filters
@@ -2309,12 +2309,12 @@ namespace Netim {
 		 * 
 		 * @return Array
 		 */
-		public function sslList(array $filters)
+		public function sslList(array $filters = [])
 		{
 			$params = array(
 				$filters
 			);
-			return $this->_launchCommand('sslList', $filters);
+			return $this->_launchCommand('sslList', $params);
 		}
 
 		/**
@@ -3148,7 +3148,7 @@ namespace Netim {
 			return $this->_launchCommand('webHostingZoneDelete', $params);
 		}
 
-		public function brandProtectionList(string $filters) {
+		public function brandProtectionList(array $filters = []) {
 			$params = [
 				$filters,
 			];
