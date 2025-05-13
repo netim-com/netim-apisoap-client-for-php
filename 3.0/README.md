@@ -5,15 +5,15 @@ This client is designed to communicate with the netim SOAP API.
 It can be integrated into all your PHP projects.
 
 ## Configuration
-The configuration is done via the conf.xml file where you can specify the API URL, your login, the secret and the language of your choice.
-For the login and the secret you can also override them at the instantiation of the object by giving the login and the secret to the constructor
+The configuration is done via the conf.xml file where you can specify the API URL, your API user, the API key secret and the language of your choice.
+For the API user and key you can also override them at the instantiation of the object by giving the login and the secret to the constructor
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
-	<url>http://oteapi.netim.com/3.0/api.wsdl</url>
-	<login>login</login>
-	<password>password</password>
+	<url>http://drs.dev.netim.com/3.0/api.wsdl</url>
+	<name>AA001_key</name>
+	<key>password</key>
 	<preferences>
 		<lang>EN</lang>
 	</preferences>
