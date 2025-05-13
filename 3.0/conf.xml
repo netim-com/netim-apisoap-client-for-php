@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
-	<url>http://api.netim.com/3.0/api.wsdl</url>
-	<login>login</login>
-	<password>password</password>
+	<url>http://drs.dev.netim.com/3.0/api.wsdl</url>
+	<name>AA001_key</name>
+	<key>password</key>
 	<preferences>
 		<lang>EN</lang>
 	</preferences>

@@ -91,8 +91,8 @@ namespace Netim {
 		private $_sessionID;
 		private $_clientSOAP;
 
-		private $_userID;
-		private $_password;
+		private $_name;
+		private $_key;
 		private $_apiURL;
         private $_preferences;
 
@@ -104,24 +104,24 @@ namespace Netim {
 		/**
 		 * Constructor for class AbstractAPISoap
 		 *
-		 * @param	string	$userID			the ID the client uses to connect to his NETIM account
-		 * @param	string	$password		the PASSWORD the client uses to connect to his NETIM account
+		 * @param	string	$name			API user name
+		 * @param	string	$key			Value of the API key
 		 * @param	string	$apiURL			the URL of the API
 		 * @param	array	$preferences	the preferences of the API session
 		 *	 
-		 * @throws	Error	if $userID, $password or $apiURL are not string or are empty
+		 * @throws	Error	if $name, $key or $apiURL are not string or are empty
 		 * 
 		 * @link semantic versionning http://semver.org/ by Tom Preston-Werner 
 		 */
-		protected function __construct(string $userID, string $password, string $apiURL, array $preferences)
+		protected function __construct(string $name, string $key, string $apiURL, array $preferences)
 		{
 			register_shutdown_function([&$this, "__destruct"]);
 			// Init variables
 			$this->_connected = false;
 			$this->_sessionID = null;
 
-			$this->_userID = $userID;
-			$this->_password = $password;
+			$this->_name = $name;
+			$this->_key = $key;
 			$this->_apiURL = $apiURL;
 
 			$this->_preferences = $preferences;
@@ -178,13 +178,13 @@ namespace Netim {
 			return $this->_lastError;
 		}
 
-		public function getUserID()
+		public function getName()
 		{
-			return $this->_userID;
+			return $this->_name;
 		}
-		public function getPassword()
+		public function getKey()
 		{
-			return $this->_password;
+			return $this->_key;
 		}
 		public function getPreferences($key = null)
 		{
@@ -332,8 +332,8 @@ namespace Netim {
 		public function sessionOpen(): void
 		{
 			$params = array(
-				$this->getUserID(),
-				$this->getPassword(),
+				$this->getName(),
+				$this->getKey(),
 				$this->getPreferences(),
 			);
 
