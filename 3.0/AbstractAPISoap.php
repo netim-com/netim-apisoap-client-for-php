@@ -18,9 +18,9 @@
  * 
  * Then you can instantiate a APISoap object:
  * ```php
- * 		$username = 'yourUsername';
- * 		$secret = 'yourSecret';
- * 		$client = new APISoap($username, $secret);
+ * 		$name = 'AA001_user';
+ * 		$key = 'ae60edc974fd9f019710bcf463113eb2053b434b49a2e8b8e5a2933632e7e355';
+ * 		$client = new APISoap($name, $key);
  * ```
  * 
  * You can also create a conf.xml file next to the APISoap.php class with the login credentials to connect to the API with no parameters

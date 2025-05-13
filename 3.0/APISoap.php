@@ -18,9 +18,9 @@
  * 
  * Then you can instantiate a APISoap object:
  * ```php
- * 		$username = 'yourUsername';
- * 		$secret = 'yourSecret';
- * 		$client = new APISoap($username, $secret);
+ * 		$name = 'AA001_user';
+ * 		$key = 'ae60edc974fd9f019710bcf463113eb2053b434b49a2e8b8e5a2933632e7e355';
+ * 		$client = new APISoap($name, $key);
  * ```
  * 
  * You can also create a conf.xml file next to the APISoap.php class with the login credentials to connect to the API with no parameters
@@ -90,15 +90,15 @@ namespace Netim {
 		/**
 		 * Constructor for class APISoap
 		 *
-		 * @param	string	$userID			the ID the client uses to connect to his NETIM account
-		 * @param	string	$password		the PASSWORD the client uses to connect to his NETIM account
+		 * @param	string	$name			API user name
+		 * @param	string	$key			Value of the API key
 		 * @param	array	$preferences	the preferences of the API session
 		 *	 
-		 * @throws Error if $userID, $password or $apiURL are not string or are empty
+		 * @throws Error if $name, $key or $apiURL are not string or are empty
 		 * 
 		 * @link semantic versionning http://semver.org/ by Tom Preston-Werner 
 		 */
-		public function __construct(string $userID = null, string $password = null, array $preferences = null)
+		public function __construct(string $name = null, string $key = null, array $preferences = null)
 		{
 
 			$confpath = dirname(__FILE__) . "/conf.xml";
@@ -107,28 +107,28 @@ namespace Netim {
 
 			$conf = get_object_vars(simplexml_load_file($confpath));
 
-			// Login
-			if (isset($userID)) {
-				if (empty($userID)) {
-					throw new NetimAPIException('Missing $userID.');
+			// API user name
+			if (isset($name)) {
+				if (empty($name)) {
+					throw new NetimAPIException('Missing $name.');
 				}
 			} else {
-				if (empty($conf['login'])) {
-					throw new NetimAPIException('Missing <login> in conf file.');
+				if (empty($conf['name'])) {
+					throw new NetimAPIException('Missing <name> in conf file.');
 				}
-				$userID = trim($conf['login']);
+				$name = trim($conf['name']);
 			}
 
-			// Password
-			if (isset($password)) {
-				if (empty($password)) {
-					throw new NetimAPIException('Missing $password.');
+			// API key
+			if (isset($key)) {
+				if (empty($key)) {
+					throw new NetimAPIException('Missing $key.');
 				}
 			} else {
-				if (empty($conf['password'])) {
-					throw new NetimAPIException('Missing <password> in conf file.');
+				if (empty($conf['key'])) {
+					throw new NetimAPIException('Missing <key> in conf file.');
 				}
-				$password = trim($conf['password']);
+				$key = trim($conf['key']);
 			}
 
 			// API URL
@@ -144,7 +144,7 @@ namespace Netim {
 				}
 			}
 
-			parent::__construct($userID, $password, $apiURL, $preferences);
+			parent::__construct($name, $key, $apiURL, $preferences);
 		}
 	}
 }
