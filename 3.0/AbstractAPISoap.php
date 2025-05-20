@@ -1762,10 +1762,10 @@ namespace Netim {
 		 * 
 		 * @return	array
 		 */
-		public function domainProductList(string $tld)
+		public function domainProductInfo(string $tld)
 		{
 			$params[] = $tld;
-			return $this->_launchCommand('domainProductList', $params);
+			return $this->_launchCommand('domainProductInfo', $params);
 		}
 
 		/**
@@ -2342,10 +2342,10 @@ namespace Netim {
 		 * 
 		 * @return	array
 		 */
-		public function sslProductList(string $product)
+		public function sslProductInfo(string $product)
 		{
 			$params[] = $product;
-			return $this->_launchCommand('sslProductList', $params);
+			return $this->_launchCommand('sslProductInfo', $params);
 		}
 
 		/**
