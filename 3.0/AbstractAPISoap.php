@@ -1754,6 +1754,21 @@ namespace Netim {
 		}
 
 		/**
+		 * Returns informations about a domain product
+		 * 
+		 * @param	string	$tld	Domain tld
+		 * 
+		 * @throws	NetimAPIException
+		 * 
+		 * @return	array
+		 */
+		public function domainProductList(string $tld)
+		{
+			$params[] = $tld;
+			return $this->_launchCommand('domainProductList', $params);
+		}
+
+		/**
 		 * Resets all DNS settings from a template 
 		 * 
 		 * @param string 	$domain Domain name
@@ -2315,6 +2330,22 @@ namespace Netim {
 				$filters
 			);
 			return $this->_launchCommand('sslList', $params);
+		}
+
+		
+		/**
+		 * Returns informations about a SSL product
+		 * 
+		 * @param	string	$product	SSL product
+		 * 
+		 * @throws	NetimAPIException
+		 * 
+		 * @return	array
+		 */
+		public function sslProductList(string $product)
+		{
+			$params[] = $product;
+			return $this->_launchCommand('sslProductList', $params);
 		}
 
 		/**
