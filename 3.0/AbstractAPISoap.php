@@ -3111,13 +3111,6 @@ namespace Netim {
 			return $this->_launchCommand('webHostingZoneDelete', $params);
 		}
 
-		public function brandProtectionList(array $filters = []) {
-			$params = [
-				$filters,
-			];
-			return $this->_launchCommand('brandProtectionList', $params);
-		}
-
 		//helpers for domainSetPreference
 		public function domainSetRegistrarLock($domain, $value)
 		{
@@ -3175,5 +3168,191 @@ namespace Netim {
 			$options['parking'] = $parking;
 			return $this->domainWebFwdCreate($fqdn, '', 'PARKING', $options);
 		}
+
+
+		/**
+		 * BRAND PROTECTIONS
+		 */
+
+		/**
+		 * Create a new brand protection
+		 *
+		 * @param	string	$label		Brand main label
+		 * @param	string	$product	Brand protection product ID
+		 * @param	integer	$duration	Period of validity in years
+		 * @param	string	$idOwner	ID of the owner contact
+		 * @param	string	$type		Brand’s type
+		 * @param	array	$infos		Array of strings containing brand datas
+		 *
+		 * @return	StructOperationResponse
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/create-protection
+		 */
+		public function brandProtectionCreate(string $label, string $product, int $duration, string $idOwner, string $type, array $infos = [])
+		{
+			$params = [
+				$label,
+				$product,
+				$duration,
+				$idOwner,
+				$type,
+				$infos
+			];
+			return $this->_launchCommand('brandProtectionCreate', $params);
+		}
+
+		/**
+		 * Return all information about a brand protection
+		 *
+		 * @param	string	$IDBP	Brand protection ID
+		 *
+		 * @return	StructBrandProtectionInfo
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/get-protection-information
+		 */
+		public function brandProtectionInfo(string $IDBP)
+		{
+			$params = [
+				$IDBP,
+			];
+			return $this->_launchCommand('brandProtectionInfo', $params);
+		}
+
+		/**
+		 * Return all information about a brand protection product
+		 *
+		 * @param	string	$product	Brand protection product ID
+		 *
+		 * @return	array
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/get-product-information
+		 */
+		public function brandProtectionProductInfo(string $product)
+		{
+			$params = [
+				$product,
+			];
+			return $this->_launchCommand('brandProtectionProductInfo', $params);
+		}
+
+		/**
+		 * Request the transfer of a brand protection to Netim
+		 *
+		 * @param	string	$reg_id 	Brand protection ID at the actual registry
+		 * @param	string	$label		Brand main label
+		 * @param	string	$product	Brand protection product ID
+		 * @param	string	$authID		Brand protection authorization code
+		 * @param	string	$idOwner	ID of the owner contact
+		 *
+		 * @return	StructOperationResponse
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/transfer-protection
+		 */
+		public function brandProtectionTransfer(string $reg_id, string $label, string $product, string $authID, string $idOwner)
+		{
+			$params = [
+				$reg_id,
+				$label,
+				$product,
+				$authID,
+				$idOwner,
+			];
+			return $this->_launchCommand('brandProtectionTransfer', $params);
+		}
+
+		/**
+		 * List brand protections matching filters
+		 *
+		 * @param	array	$filters	Search filters
+		 *
+		 * @return	array
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/get-protection-list
+		 */
+		public function brandProtectionList(array $filters = [])
+		{
+			$params = [
+				$filters,
+			];
+			return $this->_launchCommand('brandProtectionList', $params);
+		}
+
+		/**
+		 * Request the transfer of the ownership to another party
+		 *
+		 * @param	string	$id 		Brand protection ID
+		 * @param	string	$idOwner	ID of the owner contact
+		 *
+		 * @return	StructOperationResponse
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/change-owner-of-protection
+		 */
+		public function brandProtectionTransferOwner(string $id, string $idOwner)
+		{
+			$params = [
+				$id,
+				$idOwner,
+			];
+			return $this->_launchCommand('brandProtectionTransferOwner', $params);
+		}
+
+		/**
+		 * Renew a brand protection for a new period
+		 *
+		 * @param	string	$id 		Brand protection ID
+		 * @param	int		$duration	Duration in years.
+		 *
+		 * @return	StructOperationResponse
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/change-owner-of-protection
+		 */
+		public function brandProtectionRenew(string $id, int $duration)
+		{
+			$params = [
+				$id,
+				$duration,
+			];
+			return $this->_launchCommand('brandProtectionRenew', $params);
+		}
+
+		/**
+		 * Delete a brand protection
+		 *
+		 * @param	string	$id		Brand protection ID
+		 *
+		 * @return	StructOperationResponse
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/delete-protection
+		 */
+		public function brandProtectionDelete(string $id, int $duration)
+		{
+			$params = [
+				$id,
+			];
+			return $this->_launchCommand('brandProtectionDelete', $params);
+		}
+
+		/**
+		 * Set brand protection preference
+		 *
+		 * @param	string	$IDBP 		Brand protection ID
+		 * @param	string	$codePref	Preference to update ("auto_renew", "to_be_renewed")
+		 * @param	string	$enable		"0" to disable, "1" to enable.
+		 *
+		 * @return	StructOperationResponse
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/set-auto-renew
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/set-to-be-renewed
+		 */
+		public function brandProtectionSetPreference(string $IDBP, string $codePref, string $enable)
+		{
+			$params = [
+				$IDBP,
+				$codePref,
+				$enable,
+			];
+			return $this->_launchCommand('brandProtectionSetPreference', $params);
+		}
+
 	}
 }
