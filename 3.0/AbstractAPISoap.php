@@ -2264,6 +2264,22 @@ namespace Netim {
 			return $this->_launchCommand('sslList', $params);
 		}
 
+		/**
+		 * Returns the list of all prices for SSL products
+		 * 
+		 * @param	string	$product	SSL product ID
+		 * 
+		 * @return	stdClass
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/ssl-certificates/get-price-list
+		 */
+		public function sslPriceList(array $product = null)
+		{
+			$params = array(
+				$product
+			);
+			return $this->_launchCommand('sslPriceList', $params);
+		}
 		
 		/**
 		 * Returns informations about a SSL product
@@ -3233,6 +3249,24 @@ namespace Netim {
 				$product,
 			];
 			return $this->_launchCommand('brandProtectionProductInfo', $params);
+		}
+
+		
+		/**
+		 * Returns the list of all prices for brand protection products
+		 * 
+		 * @param	string	$product	Brand protection product ID
+		 * 
+		 * @return	stdClass
+		 * 
+		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/get-price-list
+		 */
+		public function brandProtectionPriceList(array $product = null)
+		{
+			$params = array(
+				$product
+			);
+			return $this->_launchCommand('brandProtectionPriceList', $params);
 		}
 
 		/**
