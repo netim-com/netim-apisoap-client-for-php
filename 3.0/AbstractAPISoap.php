@@ -2273,7 +2273,7 @@ namespace Netim {
 		 * 
 		 * @link	https://support.netim.com/en/docs/api-soap-3-0/ssl-certificates/get-price-list
 		 */
-		public function sslPriceList(array $product = null)
+		public function sslPriceList(string $product = null)
 		{
 			$params = array(
 				$product
@@ -3261,7 +3261,7 @@ namespace Netim {
 		 * 
 		 * @link	https://support.netim.com/en/docs/api-soap-3-0/brand-protections/get-price-list
 		 */
-		public function brandProtectionPriceList(array $product = null)
+		public function brandProtectionPriceList(string $product = null)
 		{
 			$params = array(
 				$product
