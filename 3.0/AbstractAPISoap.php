@@ -2058,6 +2058,50 @@ namespace Netim {
 		}
 
 		/**
+		 * Updates a web forwarding 
+		 *
+		 * Example
+		 *	```php
+		 *	$fqdn = 'subdomain.myDomain.com';
+		 *	$target = 'myDomain.com';
+		 *	$type = 'DIRECT';
+		 *	$options = $array('header'=>301, 'protocol'=>ftp, 'title'=>'', 'parking'=>'');
+		 *	
+		 *	$res = null;
+		 *	try
+		 *	{
+		 *		$res = $client->domainWebFwdUpdate($fqdn, $target, $type, $options);
+		 *		//equivalent to $res = $client->domainWebFwdUpdateTypeDirect($fqdn, $target, 301, 'ftp')
+		 *	}
+		 *	catch (NetimAPIexception $exception)
+		 *	{
+		 *		//do something when operation had an error
+		 *	}
+		 *	//continue processing
+		 *	```
+		 *
+		 * @param string $fqdn hostname (fully qualified domain name)
+		 * @param string $target target of the web forwarding
+		 * @param string $type type of the web forwarding. Accepted values are: "DIRECT", "IP", "MASKED" or "PARKING"
+		 * @param array $options contains StructOptionsFwd : settings of the web forwarding. An array with keys: header, protocol, title and parking.
+		 *
+		 * @throws NetimAPIException
+		 *
+		 * @return StructOperationResponse giving information on the status of the operation
+		 *
+		 * @see domainWebFwdUpdate API http://support.netim.com/en/wiki/DomainWebFwdUpdate
+		 * @see StructOptionsFwd http://support.netim.com/en/wiki/StructOptionsFwd
+		 */
+		public function domainWebFwdUpdate(string $fqdn, string $target, string $type, array $options):stdClass
+		{
+			$params[] = $fqdn;
+			$params[] = $target;
+			$params[] = strtoupper($type);
+			$params[] = $options;
+			return $this->_launchCommand('domainWebFwdUpdate', $params);
+		}
+
+		/**
 		 * Removes a web forwarding 
 		 *
 		 * Example
