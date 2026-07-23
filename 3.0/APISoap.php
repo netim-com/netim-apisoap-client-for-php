@@ -19,7 +19,7 @@
  * Then you can instantiate a APISoap object:
  * ```php
  * 		$name = 'AA001_user';
- * 		$key = 'ae60edc974fd9f019710bcf463113eb2053b434b49a2e8b8e5a2933632e7e355';
+ * 		$key = 'your_api_key';
  * 		$client = new APISoap($name, $key);
  * ```
  * 
@@ -139,8 +139,11 @@ namespace Netim {
 
 			// Session preferences
 			if (empty($preferences)) {
+				$preferences = [];
 				if (!empty($conf['preferences'])) {
-					$preferences = get_object_vars($conf['preferences']);
+					foreach (get_object_vars($conf['preferences']) as $prefKey => $prefValue) {
+						$preferences[$prefKey] = (string) $prefValue;
+					}
 				}
 			}
 
